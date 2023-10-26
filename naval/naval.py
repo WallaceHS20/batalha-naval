@@ -9,7 +9,7 @@ numeros = [str(i) for i in range(1, 16)]
 #tabuleiro
 tabuleiro = [letra + numero for letra in letras for numero in numeros]
 
-pontuacao = 0
+
 
 def camposPosicao(indice):
 
@@ -150,9 +150,11 @@ for camp in peca_posicao:
     camposPosicao(camp)
 
 def atk(alvo, frota):
-    quantidade_embarcacao = 0
+    pontuacao = 0
+    quantidade_embarcacao_atingida = 0
     embarcacao_atingida = False
     parcial = ''
+    atingidos = []
     
     for embarcacao in frota:
         if '|' in embarcacao:
@@ -160,17 +162,27 @@ def atk(alvo, frota):
             for fogo in alvo:
                 if fogo in parcial:
                     if embarcacao_atingida == False:
-                        quantidade_embarcacao += 1
+                        quantidade_embarcacao_atingida += 1
                     embarcacao_atingida = True
+                    if fogo not in atingidos:
+                        atingidos.append(fogo)
+
             embarcacao_atingida = False
+            if len(atingidos) == len(parcial):
+                pontuacao += (3 * len(parcial)) + 2
+
         else:
             for fogo in alvo:
                 if fogo in embarcacao:
                     if embarcacao_atingida == False:
-                        quantidade_embarcacao += 1
+                        quantidade_embarcacao_atingida += 1
                     embarcacao_atingida = True
+                    pontuacao += 5
+                    
             embarcacao_atingida = False
+            
+            
 
-    print(quantidade_embarcacao)
+    print('pontucao: ', pontuacao, ' ' ,quantidade_embarcacao_atingida, ' alvos errado: ', 13 - quantidade_embarcacao_atingida, ' alvos: ', atingidos)
 
 atk(ataque, J1)
