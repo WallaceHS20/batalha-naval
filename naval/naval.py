@@ -149,40 +149,36 @@ with open('jogador1.txt', 'r') as arquivo:
 for camp in peca_posicao:
     camposPosicao(camp)
 
+embarcacao_atingida = []
 def atk(alvo, frota):
     pontuacao = 0
     quantidade_embarcacao_atingida = 0
-    embarcacao_atingida = False
+    navio = []
+    
     parcial = ''
     atingidos = []
-    
-    for embarcacao in frota:
-        if '|' in embarcacao:
-            parcial = embarcacao.split('|')
-            for fogo in alvo:
-                if fogo in parcial:
-                    if embarcacao_atingida == False:
-                        quantidade_embarcacao_atingida += 1
-                    embarcacao_atingida = True
-                    if fogo not in atingidos:
-                        atingidos.append(fogo)
 
-            embarcacao_atingida = False
-            if len(atingidos) == len(parcial):
-                pontuacao += (3 * len(parcial)) + 2
+    for carga in frota:
+        if '|' in carga.strip():
+            navio = carga.split('|')
+            atingidos = []
+            for complemento in navio:
+                if len(atingidos) + 1 == len(navio):
+                    print('eieieieieieieie --- ' , atingidos)
+                for fogo in alvo:
+                    if fogo == complemento and fogo not in atingidos:
+                        atingidos.append(complemento)
 
-        else:
-            for fogo in alvo:
-                if fogo in embarcacao:
-                    if embarcacao_atingida == False:
-                        quantidade_embarcacao_atingida += 1
-                    embarcacao_atingida = True
-                    pontuacao += 5
+                        #SE NAVIO AINDA NÃO ATINGIDO
+                        if carga not in embarcacao_atingida:
+                            embarcacao_atingida.append(carga)
+
+                        
+                        
                     
-            embarcacao_atingida = False
             
             
 
-    print('pontucao: ', pontuacao, ' ' ,quantidade_embarcacao_atingida, ' alvos errado: ', 13 - quantidade_embarcacao_atingida, ' alvos: ', atingidos)
+    print('pontucao: ', pontuacao, ' embarcacoes atingidas: ' ,len(embarcacao_atingida), ' alvos errado: ', 13 - quantidade_embarcacao_atingida, ' alvos: ', atingidos)
 
 atk(ataque, J1)
