@@ -150,7 +150,7 @@ for camp in peca_posicao:
     camposPosicao(camp)
 
 embarcacao_atingida = []
-def atk(alvo, frota):
+def atk(alvo, frota, jogador):
     pontuacao = 0
     quantidade_embarcacao_atingida = 0
     navio = []
@@ -158,27 +158,24 @@ def atk(alvo, frota):
     parcial = ''
     atingidos = []
 
-    for carga in frota:
+    for carga in frota: # --> [b2|b3|b4]
         if '|' in carga.strip():
-            navio = carga.split('|')
+            navio = carga.split('|') # --> [b1,b2,b3,b4]
             atingidos = []
-            for complemento in navio:
+            for complemento in navio: # --> [b1]
                 if len(atingidos) + 1 == len(navio):
-                    print('eieieieieieieie --- ' , atingidos)
+                    pontuacao += 2
                 for fogo in alvo:
                     if fogo == complemento and fogo not in atingidos:
                         atingidos.append(complemento)
+                        pontuacao += 3
 
                         #SE NAVIO AINDA NÃO ATINGIDO
                         if carga not in embarcacao_atingida:
                             embarcacao_atingida.append(carga)
+        else:
+            print(carga)
 
-                        
-                        
-                    
-            
-            
+    print('pontucao: ', pontuacao, ' embarcacoes atingidas: ' ,len(embarcacao_atingida), ' alvos errado: ', 13 - quantidade_embarcacao_atingida, ' jogador: ', jogador)
 
-    print('pontucao: ', pontuacao, ' embarcacoes atingidas: ' ,len(embarcacao_atingida), ' alvos errado: ', 13 - quantidade_embarcacao_atingida, ' alvos: ', atingidos)
-
-atk(ataque, J1)
+atk(ataque, J1, 'J1')
