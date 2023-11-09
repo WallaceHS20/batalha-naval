@@ -13,32 +13,35 @@ tabuleiro = [letra + numero for letra in letras for numero in numeros]
 #PEÇA E POSICIONAMENTO
 peca_posicao = []
 
+#ARRAY DE EMBARCAÇÕES DO JOGADOR
 J1 = []
 
+#ARRAY DE ATAQUE
 ataque = []
 
+#SOBREPOSIÇÕES DE PEÇA AUXILIAR
 sobreposicao1 = []
 
+#FUNÇÃO DE ESCRITA EM ARQUIVO
 def escreverTxt(resultado):
-    # Coletando as variáveis que você deseja escrever
-linha1 = "Esta é a primeira linha do arquivo."
-linha2 = "Esta é a segunda linha do arquivo."
 
-# Abrindo o arquivo em modo de escrita
-nome_do_arquivo = "resultado.txt"
-with open(nome_do_arquivo, "w") as arquivo:
-    # Escrevendo as duas linhas no arquivo, separadas por quebra de linha
-    arquivo.write(linha1 + '\n' + linha2)
-
+    # Abrindo o arquivo em modo de escrita
+    nome_do_arquivo = "resultado.txt"
+    with open(nome_do_arquivo, "w") as arquivo:
+        # Escrevendo as duas linhas no arquivo, separadas por quebra de linha
+        arquivo.write(resultado)
+        print('realizado...')
     
 
+#FUNÇÃO DE VALIDAÇÃO DE POSICIONAMENTO
 def camposPosicao(indice, frota, alvo, jogador):
 
-    #VERIFICANDO SE FOI INSERIDO A QUANTIDADE CORRETA DE TORPEDOS
+    #VERIFICANDO SE FOI INSERIDO A QUANTIDADE CORRETA DE TORPEDOS E FROTA
     if(len(frota) != 22 or len(alvo) !=25):
-        print(jogador, 'ERROR_NR_PARTS_VALIDATION')
+        escreverTxt(f'{jogador} ERROR_NR_PARTS_VALIDATION')
         sys.exit()
 
+    #AUXILIAR CARGA
     embarcacao = ''
     
     # COLETANDO ID DA PEÇA
@@ -53,7 +56,7 @@ def camposPosicao(indice, frota, alvo, jogador):
 
         # EVITAR SOBREPOSIÇÃO DE SUBMARINOS
         if indice in sobreposicao1:
-             print(jogador, 'ERROR_OVERWRITE_PIECES_VALIDATION')
+             escreverTxt(f'{jogador} ERROR_OVERWRITE_PIECES_VALIDATION')
              sys.exit()
         else:
             sobreposicao1.append(indice)
@@ -92,12 +95,22 @@ def camposPosicao(indice, frota, alvo, jogador):
 
             while cont < pecaTamanho(peca):
                 embarcacao += tabuleiro[indice_Inicial + (15 * cont)] + '|' # A CADA 15
+
                  # INDICE EXISTE NO TABULEIRO ?
                 validaPosicionamento(tabuleiro[indice_Inicial + (15 * cont)], jogador) # SIM (CONTINUA) / NÃO (PROGRAMA AUTO FINALIZA)
+
+                # CONTADOR SIMBOLIZA QUANTIDADE DE ELEMENTOS QUE UMA EMBARCAÇÃO POSSUÍ
+
+                # A5 -> [3]  | ( 3 + (15 * 1) = 18 )
+                # B5 -> [18] | ( 3 + (15 * 2 ) = 33)
+                # C5 -> [33] | Assim por diante...
+
                 if tabuleiro[indice_Inicial + (15 * cont)] not in sobreposicao1:
                     sobreposicao1.append(tabuleiro[indice_Inicial + (15 * cont)])
+
+                # EM CASO DE SOBREPOSIÇÃO DE PEÇAS    
                 else:
-                    print(jogador, 'ERROR_OVERWRITE_PIECES_VALIDATION')
+                    escreverTxt(f'{jogador} ERROR_OVERWRITE_PIECES_VALIDATION')
                     sys.exit()
 
                 cont += 1
@@ -108,11 +121,18 @@ def camposPosicao(indice, frota, alvo, jogador):
         else:
             while cont < pecaTamanho(peca):
                 embarcacao += tabuleiro[indice_Inicial + cont] + '|' # DE 1 EM 1
+
                 validaPosicionamento(tabuleiro[indice_Inicial + cont], jogador) # SIM (CONTINUA) / NÃO (PROGRAMA AUTO FINALIZA)
+
+                #SERÁ REALIZADO UMA CONTAGEM SIMPLES DE ELEMENTOS
+
+                # A5 -> [3] | (3 + 1 = 4)
+                # A6 -> [4] | (4 + 1 = 5)
+
                 if tabuleiro[indice_Inicial + cont] not in sobreposicao1:
                     sobreposicao1.append(tabuleiro[indice_Inicial + cont])
                 else:
-                    print(jogador, 'ERROR_OVERWRITE_PIECES_VALIDATION')
+                    escreverTxt(f'{jogador} ERROR_OVERWRITE_PIECES_VALIDATION')
                     sys.exit()
 
                 cont += 1
@@ -121,7 +141,7 @@ def camposPosicao(indice, frota, alvo, jogador):
     
     # ESTE INDICE JÁ FOI UTILIZADO...
     else:
-        print(jogador, 'ERROR_OVERWRITE_PIECES_VALIDATION')
+        escreverTxt(f'{jogador} ERROR_OVERWRITE_PIECES_VALIDATION')
         sys.exit()
 
 # FUNÇÃO PARA VERIFICAR TAMANHO DA PEÇA
@@ -141,7 +161,7 @@ def pecaTamanho(peca):
 # FUNÇÃO PARA VERIFICAR SE EXISTE NO TABULEIRO
 def validaPosicionamento(indice, jogador):
     if indice not in tabuleiro:
-        print(jogador, 'ERROR_POSITION_NONEXISTENT_VALIDATION')
+        escreverTxt(f'{jogador} ERROR_POSITION_NONEXISTENT_VALIDATION')
         sys.exit()
 
 with open('jogador1.txt', 'r') as arquivo:
@@ -221,7 +241,7 @@ def camposPosicao2(indice, frota, alvo, jogador):
 
     #VERIFICANDO SE FOI INSERIDO A QUANTIDADE CORRETA DE TORPEDOS
     if(len(frota) != 22 or len(alvo) !=25):
-        print(jogador, 'ERROR_NR_PARTS_VALIDATION')
+        escreverTxt(f'{jogador} ERROR_NR_PARTS_VALIDATION')
         sys.exit()
 
     embarcacao = ''
@@ -238,7 +258,7 @@ def camposPosicao2(indice, frota, alvo, jogador):
 
         # EVITAR SOBREPOSIÇÃO DE SUBMARINOS
         if indice in sobreposicao2:
-             print(jogador, 'ERROR_OVERWRITE_PIECES_VALIDATION')
+             escreverTxt(f'{jogador} ERROR_OVERWRITE_PIECES_VALIDATION')
              sys.exit()
         else:
             sobreposicao2.append(indice)
@@ -282,7 +302,7 @@ def camposPosicao2(indice, frota, alvo, jogador):
                 if tabuleiro[indice_Inicial + (15 * cont)] not in sobreposicao2:
                     sobreposicao2.append(tabuleiro[indice_Inicial + (15 * cont)])
                 else:
-                    print(jogador, 'ERROR_OVERWRITE_PIECES_VALIDATION')
+                    escreverTxt(f'{jogador} ERROR_OVERWRITE_PIECES_VALIDATION')
                     sys.exit()
 
                 cont += 1
@@ -297,7 +317,7 @@ def camposPosicao2(indice, frota, alvo, jogador):
                 if tabuleiro[indice_Inicial + cont] not in sobreposicao2:
                     sobreposicao2.append(tabuleiro[indice_Inicial + cont])
                 else:
-                    print(jogador, 'ERROR_OVERWRITE_PIECES_VALIDATION')
+                    escreverTxt(f'{jogador} ERROR_OVERWRITE_PIECES_VALIDATION')
                     sys.exit()
 
                 cont += 1
@@ -306,7 +326,7 @@ def camposPosicao2(indice, frota, alvo, jogador):
     
     # ESTE INDICE JÁ FOI UTILIZADO...
     else:
-        print(jogador, 'ERROR_OVERWRITE_PIECES_VALIDATION')
+        escreverTxt(f'{jogador} ERROR_OVERWRITE_PIECES_VALIDATION')
         sys.exit()
 
 for camp in peca_posicao2:
@@ -353,11 +373,10 @@ resultado_J1 = atk(ataque, J1, 'J1').split('|')
 resultado_J2 = atk(ataque2, J2, 'J2').split('|')
 
 if (int(resultado_J1[3]) > int(resultado_J2[3])):
-    print(f'{resultado_J1[0]} {resultado_J1[1]}AA {resultado_J1[2]}AE {resultado_J1[3]}PT')
+    escreverTxt(f'{resultado_J1[0]} {resultado_J1[1]}AA {resultado_J1[2]}AE {resultado_J1[3]}PT')
 
 elif (int(resultado_J1[3]) < int(resultado_J2[3])):
-    print(f'{resultado_J2[0]} {resultado_J2[1]}AA {resultado_J2[2]}AE {resultado_J2[3]}PT')
+    escreverTxt(f'{resultado_J2[0]} {resultado_J2[1]}AA {resultado_J2[2]}AE {resultado_J2[3]}PT')
 
 else:
-    print(f'{resultado_J1[0]} {resultado_J1[1]}AA {resultado_J1[2]}AE {resultado_J1[3]}PT')
-    print(f'{resultado_J2[0]} {resultado_J2[1]}AA {resultado_J2[2]}AE {resultado_J2[3]}PT')
+    escreverTxt(f'{resultado_J1[0]} {resultado_J1[1]}AA {resultado_J1[2]}AE {resultado_J1[3]}PT\n{resultado_J2[0]} {resultado_J2[1]}AA {resultado_J2[2]}AE {resultado_J2[3]}PT')
